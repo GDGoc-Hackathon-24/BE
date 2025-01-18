@@ -18,7 +18,7 @@ public record UserResponseDto(
                 user.getBirthaDate(),
                 user.getGender().toString(),
                 user.getName(),
-                user.getEmoji().toString(),
+                user.getEmoji(),
                 user.getPhoneNumber(),
                 user.getFamily()
         );

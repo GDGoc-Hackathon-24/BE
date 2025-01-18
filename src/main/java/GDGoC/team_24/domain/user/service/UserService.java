@@ -1,6 +1,5 @@
 package GDGoC.team_24.domain.user.service;
 
-import GDGoC.team_24.domain.user.domain.EMOJI;
 import GDGoC.team_24.domain.user.domain.GENDER;
 import GDGoC.team_24.domain.user.domain.User;
 import GDGoC.team_24.domain.user.dto.UserLoginReqDto;
@@ -21,15 +20,13 @@ public class UserService {
     public UserResponseDto userSignUp(UserRequestDto userRequestDto) {
 
 
-
-        EMOJI emoji = EMOJI.valueOf(userRequestDto.emoji().toUpperCase());
         GENDER gender = GENDER.valueOf(userRequestDto.gender().toUpperCase());
         User user = User.builder()
                 .name(userRequestDto.name())
                 .gender(gender)
                 .birthaDate(userRequestDto.birthDate())
                 .phoneNumber(String.valueOf(userRequestDto.phoneNumber()))
-                .emoji(emoji)
+                .emoji(userRequestDto.emoji())
                 .build();
 
         userRepository.save(user);
