@@ -2,12 +2,14 @@ package GDGoC.team_24.domain.family.domain;
 
 import GDGoC.team_24.domain.user.domain.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@Setter
+@Builder
+@AllArgsConstructor
 public class Family {
 
     @Id
@@ -16,8 +18,7 @@ public class Family {
 
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    private RELATIONSHIP relationship;
+    private String relationship;
 
     private String gender;
 
