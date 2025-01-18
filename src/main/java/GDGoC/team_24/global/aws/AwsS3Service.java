@@ -1,6 +1,7 @@
 package GDGoC.team_24.global.aws;
 
 import GDGoC.team_24.global.code.status.ErrorStatus;
+
 import GDGoC.team_24.global.exception.Handler.S3Handler;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
@@ -10,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
@@ -19,6 +19,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AwsS3Service {
+
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
