@@ -1,5 +1,7 @@
 package GDGoC.team_24.domain.user.controller;
 
+import GDGoC.team_24.domain.user.domain.Userinfo;
+import GDGoC.team_24.domain.user.dto.UserInfoRequestDto;
 import GDGoC.team_24.global.ApiResponse;
 import GDGoC.team_24.domain.user.dto.UserLoginReqDto;
 import GDGoC.team_24.domain.user.dto.UserRequestDto;
@@ -41,6 +43,14 @@ public class UserController {
     public ApiResponse<UserResponseDto> userGet(@PathVariable("userId") Long userId) {
 
         return ApiResponse.onSuccess(userService.userGet(userId));
+
+    }
+
+    @PostMapping({"/{userId}/userInfo"})
+    @Operation(summary = "유저 기본질문 생성 API", description = "유저 기본질문을 생성하는 API입니다.")
+    public ApiResponse<Long> userSignUp(@PathVariable("userId") Long userId, @RequestBody UserInfoRequestDto request) {
+
+        return ApiResponse.onSuccess(userService.userInfoSave(request,userId));
 
     }
 

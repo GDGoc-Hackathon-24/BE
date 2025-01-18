@@ -1,18 +1,28 @@
 package GDGoC.team_24.domain.user.domain;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Userinfo {
     @Id
-    @GeneratedValue
-    private static Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private static HOUSE house;
+    @Enumerated(EnumType.STRING)
+    private HOUSE house;
 
-    private static Long sun;
-    private static Long daughter;
-    private static String hubby;
-    private static String medicine;
+    private Long sun;
+    private Long daughter;
+    private String hubby;
+    private String medicine;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

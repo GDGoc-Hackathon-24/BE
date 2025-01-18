@@ -37,6 +37,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Diary> diaries = new ArrayList<>();
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Userinfo userinfo;
+
     @Builder
     public User(Long id, String name, GENDER gender, String birthaDate, String phoneNumber,String emoji, Family family) {
         this.id = id;
