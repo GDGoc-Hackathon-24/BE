@@ -1,7 +1,7 @@
 package GDGoC.team_24.global.aws;
 
 import GDGoC.team_24.global.code.status.ErrorStatus;
-import GDGoC.team_24.global.exception.S3Handler;
+import GDGoC.team_24.global.exception.Handler.S3Handler;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
