@@ -24,7 +24,12 @@ public enum ErrorStatus implements BaseErrorCode {
 
     JWT_SIGNATURE_INVALID(HttpStatus.UNAUTHORIZED, "AUTH001", "JWT 서명이 올바르지 않습니다."),
     JWT_EXPIRED(HttpStatus.UNAUTHORIZED, "AUTH002", "JWT 토큰이 만료되었습니다."),
-    JWT_MALFORMED(HttpStatus.UNAUTHORIZED, "AUTH003", "JWT 토큰이 올바르지 않은 형식입니다.");
+    JWT_MALFORMED(HttpStatus.UNAUTHORIZED, "AUTH003", "JWT 토큰이 올바르지 않은 형식입니다."),
+
+    //S3
+    S3_FAILED(HttpStatus.INTERNAL_SERVER_ERROR,"S34001","사진 업로드에 실패했습니다."),
+    S3_FORMAT(HttpStatus.BAD_REQUEST, "S34002","잘못된 형식의 파일입니다."),
+    ;
 
 
     private final HttpStatus httpStatus;
