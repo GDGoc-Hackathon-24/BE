@@ -28,7 +28,7 @@ public class UserController {
 
     }
 
-    @GetMapping
+    @PostMapping("/login")
     @Operation(summary = "유저 로그인 API", description = "로그인 생성하는 API입니다.")
     public ApiResponse<UserResponseDto> userLogin(@RequestBody UserLoginReqDto userLoginReqDto) {
 
