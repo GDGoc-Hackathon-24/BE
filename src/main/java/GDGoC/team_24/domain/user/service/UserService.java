@@ -1,6 +1,5 @@
 package GDGoC.team_24.domain.user.service;
 
-import GDGoC.team_24.domain.user.domain.EMOJI;
 import GDGoC.team_24.domain.user.domain.GENDER;
 import GDGoC.team_24.domain.user.domain.User;
 import GDGoC.team_24.domain.user.dto.UserLoginReqDto;
@@ -25,8 +24,6 @@ public class UserService {
             throw new GeneralException(ErrorStatus.FAMILY_ALREADY);
         }
 
-
-        EMOJI emoji = EMOJI.valueOf(userRequestDto.emoji().toUpperCase());
         GENDER gender = GENDER.valueOf(userRequestDto.gender().toUpperCase());
 
         User user = User.builder()
@@ -34,7 +31,7 @@ public class UserService {
                 .gender(gender)
                 .birthaDate(userRequestDto.birthDate())
                 .phoneNumber(String.valueOf(userRequestDto.phoneNumber()))
-                .emoji(emoji)
+                .emoji(userRequestDto.emoji())
                 .build();
 
         userRepository.save(user);
