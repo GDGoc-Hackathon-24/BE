@@ -11,6 +11,7 @@ public class FamilyConverter {
                 .gender(request.getGender())
                 .name(request.getName())
                 .relationship(request.getRelationship())
+                .emoji(request.getEmoji())
                 .user(user)
                 .build();
     }
@@ -20,6 +21,7 @@ public class FamilyConverter {
                 .familyId(family.getId())
                 .gender(family.getGender())
                 .name(family.getName())
+                .emoji(family.getEmoji())
                 .relationship(family.getRelationship())
                 .build();
     }

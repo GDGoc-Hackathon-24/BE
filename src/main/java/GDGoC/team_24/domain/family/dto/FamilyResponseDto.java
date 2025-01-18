@@ -16,5 +16,6 @@ public class FamilyResponseDto {
         String name;
         String gender;
         String relationship;
+        String emoji;
     }
 }
