@@ -17,8 +17,9 @@ public class DiaryController {
 
     private final DiaryService diaryService;
 
-    @PostMapping
+    @PostMapping(consumes = "multipart/form-data")
     @Operation(summary = "일기 작성 API", description = "일기 생성하는 API입니다.")
+
     public ApiResponse<DiaryResponseDto> createDiary(@RequestPart(name = "diary") DiaryRequestDto userRequestDto,
                                                      @RequestPart(name = "ImageFile", required = false) List<MultipartFile> imgs
                                       ) {
