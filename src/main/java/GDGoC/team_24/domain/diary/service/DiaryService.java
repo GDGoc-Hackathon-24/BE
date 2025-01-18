@@ -18,6 +18,7 @@ import GDGoC.team_24.global.aws.AwsS3Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -48,6 +49,9 @@ public class DiaryService {
 
         // Diary에 포함될 사진들 저장
         List<DiaryPhoto> diaryPhotos = new ArrayList<>();
+        if (imgs == null) {
+            imgs = new ArrayList<>();
+        }
         for (MultipartFile img : imgs) {
             String imgUrl = awsS3Service.uploadFile(img);
 
@@ -131,4 +135,3 @@ public class DiaryService {
 
     }
 }
-
