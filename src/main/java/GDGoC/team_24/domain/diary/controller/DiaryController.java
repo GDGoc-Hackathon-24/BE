@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 @RestController
@@ -48,6 +47,8 @@ public class DiaryController {
     @DeleteMapping("{diaryId}")
     @Operation(summary = "일기삭제 API", description = "일기 삭제하는 API입니다.")
     public ApiResponse deleteDiary(@PathVariable Long diaryId) {
+
+        diaryService.deleteDiary(diaryId);
 
         return ApiResponse.onSuccess("일기가 성공적으로 삭제되었습니다.");
     }
