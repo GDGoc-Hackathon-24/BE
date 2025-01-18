@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -26,6 +28,8 @@ public class Quiz extends BaseEntity {
     private boolean isCorrect; //퀴즈 맞/틀 여부
 
     private Long quizAnswer; //퀴즈 답변
+
+    private LocalDateTime nextRetryTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

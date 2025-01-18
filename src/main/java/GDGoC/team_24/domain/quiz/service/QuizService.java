@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,20 +31,17 @@ public class QuizService {
     private final UserRepository userRepository;
 
     public Quiz makeQuiz(QuizRequestDto.createQuiz request, Long familyId) {
-        // 퀴즈 생성
+        Family family = familyRepository.findById(familyId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
+        User user = family.getUser(); // 중복 조회 제거
+
         Quiz newQuiz = new Quiz();
         newQuiz.setQuestion(request.getQuestion());
         newQuiz.setAnswer(request.getAnswer());
         newQuiz.setCompleted(false);
+        newQuiz.setUser(user); // User 설정
 
-        // Family 및 User 조회
-        Family family = familyRepository.findById(familyId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
-        User user = userRepository.findById(family.getUser().getId())
-                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
-        newQuiz.setUser(user);
-
-        // 퀴즈 저장
         Quiz savedQuiz = quizRepository.save(newQuiz);
 
         // 선택지 저장
@@ -60,39 +58,48 @@ public class QuizService {
         return savedQuiz;
     }
 
+
     public Boolean answerQuiz(QuizRequestDto.answerQuiz request) {
         Quiz quiz = quizRepository.findById(request.getQuizId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.QUIZ_NOT_FOUND));
 
-        // 정답 비교
+        // 객관식 정답 비교
         boolean isCorrect = quiz.getAnswer().equals(request.getAnswer());
         quiz.setCorrect(isCorrect);
-        quiz.setCompleted(true); // 퀴즈 완료 상태로 변경
-        quiz.setQuizAnswer(request.getAnswer()); // 사용자 답변 저장
-        quizRepository.save(quiz);
+        quiz.setCompleted(true); // 퀴즈 완료 처리
+        quiz.setQuizAnswer(request.getAnswer()); // 사용자 입력 저장
 
+        if (!isCorrect) {
+            // 틀린 경우: 하루 뒤에 다시 풀 수 있도록 설정
+            quiz.setNextRetryTime(LocalDateTime.now().plusDays(1));
+        } else {
+            // 맞은 경우: 7일 뒤에 다시 풀 수 있도록 설정
+            quiz.setNextRetryTime(LocalDateTime.now().plusDays(7));
+        }
+
+        quizRepository.save(quiz);
         return isCorrect;
     }
 
 
+
     public Page<QuizResponseDto.quizList> readAllQuizzes(Long userId, Boolean solve, Pageable pageable) {
-        // User 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        // User가 푼/안 푼 퀴즈를 페이지네이션으로 조회
-        Page<Quiz> quizzes = quizRepository.findByUserAndIsCompleted(user, solve, pageable);
+        // solve 값에 따라 풀었던 퀴즈/풀지 않은 퀴즈 조회
+        Page<Quiz> quizzes = solve
+                ? quizRepository.findSolvedQuizzes(user, pageable) // 풀었던 퀴즈 조회
+                : quizRepository.findUnsolvedQuizzes(user, pageable); // 풀지 않은 퀴즈 조회 (nextRetryTime 조건 포함)
 
         if (quizzes.isEmpty()) {
             throw new GeneralException(ErrorStatus.QUIZ_NOT_FOUND);
         }
 
-        // 각 퀴즈와 해당 선택지 정보를 DTO로 변환
+        // DTO 변환
         return quizzes.map(quiz -> {
-            // 선택지 조회
             List<QuizOption> options = quizOptionRepository.findByQuiz(quiz);
 
-            // 선택지를 DTO로 변환
             List<QuizResponseDto.QuizOptionDto> optionDtos = options.stream()
                     .map(option -> QuizResponseDto.QuizOptionDto.builder()
                             .number(option.getNumber())
@@ -100,7 +107,6 @@ public class QuizService {
                             .build())
                     .toList();
 
-            // 퀴즈와 선택지 정보를 DTO로 변환
             return QuizResponseDto.quizList.builder()
                     .id(quiz.getId())
                     .question(quiz.getQuestion())
@@ -113,13 +119,15 @@ public class QuizService {
     }
 
 
+
+
     public Boolean noAnswerQuiz(Long userId) {
-        // User 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        // 안 푼 퀴즈 존재 여부 확인
-        return quizRepository.existsByUserAndIsCompleted(user, false);
+        // 다음 풀 수 있는 퀴즈 존재 여부 확인
+        return quizRepository.existsByUserAndIsCompletedAndNextRetryTimeBefore(user, false);
     }
+
 
 }

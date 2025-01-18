@@ -54,7 +54,7 @@ public class QuizController {
         return ApiResponse.onSuccess(quizService.noAnswerQuiz(userId));
     }
 
-    @Operation(summary = "안푼 퀴즈 조회 API", description = "지금까지 안푼 퀴즈를 페이지네이션으로 조회합니다.")
+    @Operation(summary = "안 푼 퀴즈 조회 API", description = "다시 풀 수 있는 퀴즈만 반환합니다.")
     @GetMapping("/{userId}/noanswerlist")
     public ApiResponse<Page<QuizResponseDto.quizList>> listNoQuiz(
             @PathVariable Long userId,
