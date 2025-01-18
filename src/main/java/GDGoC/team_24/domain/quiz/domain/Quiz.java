@@ -24,6 +24,6 @@ public class Quiz {
 
     private String quizAnswer; //퀴즈 답변
 
-    @OneToOne(mappedBy = "quiz")
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 }
