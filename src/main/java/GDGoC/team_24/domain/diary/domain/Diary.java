@@ -20,9 +20,10 @@ public class Diary {
 
     private LocalDateTime date;
 
-//    @Enumerated(EnumType.STRING)
-//    private TODAYEMTION todayEmtion;
+    @Enumerated(EnumType.STRING)
+    private TODAYEMTION todayEmtion;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 }

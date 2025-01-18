@@ -17,8 +17,8 @@ public class Family extends BaseEntity {
 
     private String name;
 
-//    @Enumerated(EnumType.STRING)
-//    private RELATIONSHIP relationship;
+    @Enumerated(EnumType.STRING)
+    private RELATIONSHIP relationship;
 
     private String gender;
 
