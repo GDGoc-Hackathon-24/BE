@@ -28,10 +28,8 @@ public class User {
 
     private String phoneNumber;
 
-    @Enumerated(EnumType.STRING)
-    private EMOJI emoji;
-
-    @OneToOne(cascade = CascadeType.ALL)
+    private String emoji;
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family_id")
     private Family family;
 
@@ -40,14 +38,14 @@ public class User {
     private List<Diary> diaries = new ArrayList<>();
 
     @Builder
-    public User(Long id, String name, GENDER gender, String birthaDate, String phoneNumber,EMOJI emoji) {
+    public User(Long id, String name, GENDER gender, String birthaDate, String phoneNumber,String emoji, Family family) {
         this.id = id;
         this.name = name;
         this.gender = gender;
         this.birthaDate = birthaDate;
         this.phoneNumber = phoneNumber;
         this.emoji = emoji;
-//        this.family = family;
+        this.family = family;
     }
     public void setFamily(Family family){
         this.family = family;
