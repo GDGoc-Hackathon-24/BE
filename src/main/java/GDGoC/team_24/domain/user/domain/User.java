@@ -2,7 +2,6 @@ package GDGoC.team_24.domain.user.domain;
 
 import GDGoC.team_24.domain.diary.domain.Diary;
 import GDGoC.team_24.domain.family.domain.Family;
-import GDGoC.team_24.domain.quiz.domain.Quiz;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,6 +47,9 @@ public class User {
         this.birthaDate = birthaDate;
         this.phoneNumber = phoneNumber;
         this.emoji = emoji;
+        this.family = family;
+    }
+    public void setFamily(Family family){
         this.family = family;
     }
 

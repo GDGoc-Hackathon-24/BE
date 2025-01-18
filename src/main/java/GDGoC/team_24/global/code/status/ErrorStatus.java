@@ -31,7 +31,12 @@ public enum ErrorStatus implements BaseErrorCode {
     S3_FAILED(HttpStatus.INTERNAL_SERVER_ERROR,"S34001","사진 업로드에 실패했습니다."),
     S3_FORMAT(HttpStatus.BAD_REQUEST, "S34002","잘못된 형식의 파일입니다."),
 
+    //family
+    SENIOR_NOT_FOUND(HttpStatus.NOT_FOUND,"FAMILY4001","노인 정보를 찾을 수 없습니다."),
+    FAMILY_NOT_FOUND(HttpStatus.NOT_FOUND, "FAMILY4002", "회원 정보가 없습니다."),
+    FAMILY_ALREADY(HttpStatus.BAD_REQUEST,"FAMILY4003", "이미 가입한 가족이 존재합니다."),
 
+    //quiz
     QUIZ_NOT_FOUND(HttpStatus.NOT_FOUND,"QUIZ4001","퀴즈를 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
