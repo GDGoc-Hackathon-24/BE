@@ -14,8 +14,9 @@ public class FamilyConverter {
                 .user(user)
                 .build();
     }
-    public static FamilyResponseDto.FamilyInfoDto toFamilyInfoDto(Family family) {
+    public static FamilyResponseDto.FamilyInfoDto toFamilyInfoDto(Family family, User user) {
         return FamilyResponseDto.FamilyInfoDto.builder()
+                .seniorId(user.getId())
                 .familyId(family.getId())
                 .gender(family.getGender())
                 .name(family.getName())

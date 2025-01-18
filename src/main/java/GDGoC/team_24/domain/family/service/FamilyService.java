@@ -28,7 +28,7 @@ public class FamilyService {
         familyRepository.save(family);
         user.setFamily(family);
         userRepository.save(user);
-        return FamilyConverter.toFamilyInfoDto(family);
+        return FamilyConverter.toFamilyInfoDto(family, user);
     }
 
     public FamilyResponseDto.FamilyInfoDto familyLogin(FamilyRequestDto.FamilyLoginDto request) {
@@ -38,12 +38,13 @@ public class FamilyService {
         if(family == null) {
             throw new ErrorHandler(ErrorStatus.FAMILY_NOT_FOUND);
         }
-        return FamilyConverter.toFamilyInfoDto(family);
+        return FamilyConverter.toFamilyInfoDto(family, user);
     }
 
     public FamilyResponseDto.FamilyInfoDto getFamilyInfo(Long familyId) {
         Family family = familyRepository.findById(familyId)
                 .orElseThrow(() -> new ErrorHandler(ErrorStatus.FAMILY_NOT_FOUND));
-        return FamilyConverter.toFamilyInfoDto(family);
+        User user = userRepository.findByFamily(family);
+        return FamilyConverter.toFamilyInfoDto(family, user);
     }
 }

@@ -12,6 +12,7 @@ public class FamilyResponseDto {
     @Builder
     public static class FamilyInfoDto{
         Long familyId;
+        Long seniorId;
         String name;
         String gender;
         String relationship;
