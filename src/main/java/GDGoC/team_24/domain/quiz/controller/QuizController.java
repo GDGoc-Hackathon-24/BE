@@ -2,6 +2,7 @@ package GDGoC.team_24.domain.quiz.controller;
 
 import GDGoC.team_24.domain.quiz.converter.QuizConverter;
 import GDGoC.team_24.domain.quiz.domain.Quiz;
+import GDGoC.team_24.domain.quiz.dto.CustomPage;
 import GDGoC.team_24.domain.quiz.dto.QuizRequestDto;
 import GDGoC.team_24.domain.quiz.dto.QuizResponseDto;
 import GDGoC.team_24.domain.quiz.service.QuizService;
@@ -40,7 +41,7 @@ public class QuizController {
 
     @Operation(summary = "퀴즈 조회 API", description = "지금까지 푼 퀴즈를 페이지네이션으로 조회합니다.")
     @GetMapping("/{userId}/answerlist")
-    public ApiResponse<Page<QuizResponseDto.quizList>> listQuiz(
+    public ApiResponse<CustomPage<QuizResponseDto.quizList>> listQuiz(
             @PathVariable Long userId,
             Pageable pageable
     ) {
@@ -56,7 +57,7 @@ public class QuizController {
 
     @Operation(summary = "안 푼 퀴즈 조회 API", description = "다시 풀 수 있는 퀴즈만 반환합니다.")
     @GetMapping("/{userId}/noanswerlist")
-    public ApiResponse<Page<QuizResponseDto.quizList>> listNoQuiz(
+    public ApiResponse<CustomPage<QuizResponseDto.quizList>> listNoQuiz(
             @PathVariable Long userId,
             Pageable pageable
     ) {

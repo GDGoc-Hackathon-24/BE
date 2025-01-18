@@ -32,6 +32,4 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
             @Param("user") User user,
             @Param("isCompleted") Boolean isCompleted);
 
-
-
 }

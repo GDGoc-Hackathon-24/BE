@@ -4,6 +4,7 @@ import GDGoC.team_24.domain.family.domain.Family;
 import GDGoC.team_24.domain.family.repository.FamilyRepository;
 import GDGoC.team_24.domain.quiz.domain.Quiz;
 import GDGoC.team_24.domain.quiz.domain.QuizOption;
+import GDGoC.team_24.domain.quiz.dto.CustomPage;
 import GDGoC.team_24.domain.quiz.dto.QuizRequestDto;
 import GDGoC.team_24.domain.quiz.dto.QuizResponseDto;
 import GDGoC.team_24.domain.quiz.repository.QuizOptionRepository;
@@ -83,41 +84,52 @@ public class QuizService {
 
 
 
-    public Page<QuizResponseDto.quizList> readAllQuizzes(Long userId, Boolean solve, Pageable pageable) {
+    public CustomPage<QuizResponseDto.quizList> readAllQuizzes(Long userId, Boolean solve, Pageable pageable) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        // solve 값에 따라 풀었던 퀴즈/풀지 않은 퀴즈 조회
         Page<Quiz> quizzes = solve
-                ? quizRepository.findSolvedQuizzes(user, pageable) // 풀었던 퀴즈 조회
-                : quizRepository.findUnsolvedQuizzes(user, pageable); // 풀지 않은 퀴즈 조회 (nextRetryTime 조건 포함)
+                ? quizRepository.findSolvedQuizzes(user, pageable)
+                : quizRepository.findUnsolvedQuizzes(user, pageable);
 
         if (quizzes.isEmpty()) {
             throw new GeneralException(ErrorStatus.QUIZ_NOT_FOUND);
         }
 
-        // DTO 변환
-        return quizzes.map(quiz -> {
-            List<QuizOption> options = quizOptionRepository.findByQuiz(quiz);
+        // `Page` 객체를 `CustomPage`로 변환
+        List<QuizResponseDto.quizList> quizList = quizzes.getContent().stream()
+                .map(quiz -> {
+                    List<QuizOption> options = quizOptionRepository.findByQuiz(quiz);
 
-            List<QuizResponseDto.QuizOptionDto> optionDtos = options.stream()
-                    .map(option -> QuizResponseDto.QuizOptionDto.builder()
-                            .number(option.getNumber())
-                            .text(option.getText())
-                            .build())
-                    .toList();
+                    List<QuizResponseDto.QuizOptionDto> optionDtos = options.stream()
+                            .map(option -> QuizResponseDto.QuizOptionDto.builder()
+                                    .number(option.getNumber())
+                                    .text(option.getText())
+                                    .build())
+                            .toList();
 
-            return QuizResponseDto.quizList.builder()
-                    .id(quiz.getId())
-                    .question(quiz.getQuestion())
-                    .options(optionDtos)
-                    .answer(quiz.getAnswer())
-                    .quizAnswer(quiz.getQuizAnswer())
-                    .isCorrect(quiz.isCorrect())
-                    .build();
-        });
+                    return QuizResponseDto.quizList.builder()
+                            .id(quiz.getId())
+                            .question(quiz.getQuestion())
+                            .options(optionDtos)
+                            .answer(quiz.getAnswer())
+                            .quizAnswer(quiz.getQuizAnswer())
+                            .isCorrect(quiz.isCorrect())
+                            .solvedAt(quiz.getUpdatedAt())
+                            .build();
+                })
+                .toList();
+
+        return CustomPage.<QuizResponseDto.quizList>builder()
+                .content(quizList)
+                .pageNumber(quizzes.getNumber())
+                .pageSize(quizzes.getSize())
+                .totalElements(quizzes.getTotalElements())
+                .totalPages(quizzes.getTotalPages())
+                .isLast(quizzes.isLast())
+                .isFirst(quizzes.isFirst())
+                .build();
     }
-
 
 
 
