@@ -21,6 +21,7 @@ public class Family {
     private String relationship;
 
     private String gender;
+    private String emoji;
 
     @OneToOne(mappedBy = "family")
     private User user;

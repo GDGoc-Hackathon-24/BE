@@ -9,6 +9,7 @@ public class FamilyRequestDto {
         String phoneNumber;
         String gender;
         String relationship;
+        String emoji;
     }
     @Getter
     public static class FamilyLoginDto {
