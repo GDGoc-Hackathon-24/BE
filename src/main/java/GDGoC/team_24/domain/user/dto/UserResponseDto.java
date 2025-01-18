@@ -10,7 +10,8 @@ public record UserResponseDto(
         String name,
         String emoji,
         String phoneNumber,
-        Family family
+        Long familyId
+
 ) {
     public UserResponseDto(User user) {
         this(
@@ -20,7 +21,7 @@ public record UserResponseDto(
                 user.getName(),
                 user.getEmoji().toString(),
                 user.getPhoneNumber(),
-                user.getFamily()
+                user.getFamily().getId()
         );
     }
 }
