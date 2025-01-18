@@ -11,23 +11,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Quiz extends BaseEntity {
-
+public class QuizOption extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String question; //퀴즈
-
-    private Long answer; //퀴즈 정답
-
-    private boolean isCompleted; //퀴즈 품 여부
-
-    private boolean isCorrect; //퀴즈 맞/틀 여부
-
-    private Long quizAnswer; //퀴즈 답변
-
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Quiz quiz;
+
+    private Long number;
+    private String text;
 
 }

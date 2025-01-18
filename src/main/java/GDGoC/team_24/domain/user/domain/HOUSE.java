@@ -1,5 +1,5 @@
 package GDGoC.team_24.domain.user.domain;
 
-public enum GENDER {
-    MAN,WOMAN
+public enum HOUSE {
+    CITY, COUNTRYSIDE
 }
