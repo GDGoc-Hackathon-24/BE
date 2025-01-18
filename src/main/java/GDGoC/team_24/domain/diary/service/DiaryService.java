@@ -49,6 +49,9 @@ public class DiaryService {
 
         // Diary에 포함될 사진들 저장
         List<DiaryPhoto> diaryPhotos = new ArrayList<>();
+        if (imgs == null) {
+            imgs = new ArrayList<>();
+        }
         for (MultipartFile img : imgs) {
             String imgUrl = awsS3Service.uploadFile(img);
 
