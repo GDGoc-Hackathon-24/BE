@@ -18,5 +18,8 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query("SELECT u from User u WHERE u.family = :family")
     User findByFamily(@Param("family")Family family);
 
+    boolean existsByPhoneNumber(String phoneNumber);
+
+
 }
 

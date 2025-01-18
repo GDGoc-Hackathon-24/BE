@@ -53,4 +53,13 @@ public class DiaryController {
         return ApiResponse.onSuccess("일기가 성공적으로 삭제되었습니다.");
     }
 
+    @PostMapping("/allList/{userId}")
+    @Operation(summary = "일기 전체 조회 API", description = "일기 전체조회 API입니다.")
+    public ApiResponse allList(@PathVariable Long userId) {
+
+        return ApiResponse.onSuccess(diaryService.allList(userId));
+
+
+    }
+
 }
