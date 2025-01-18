@@ -18,7 +18,6 @@ import GDGoC.team_24.global.aws.AwsS3Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -121,10 +120,14 @@ public class DiaryService {
     }
 
     public List<DiaryResponseDto> allList(Long userId) {
+        List<DiaryResponseDto> diaryResponseDtos = new ArrayList<>();
         List<Diary> userDiaries = diaryRepository.findByUserId(userId);
-        return userDiaries.stream()
-                .map(DiaryResponseDto::from)
-                .collect(Collectors.toList());
+        for(Diary diary:userDiaries) {
+            List<DiaryPhoto> diaryPhotos = diaryPhotoRepository.findByDiary(diary);
+            DiaryResponseDto diaryResponseDto = new DiaryResponseDto(diary, diaryPhotos);
+            diaryResponseDtos.add(diaryResponseDto);
+        }
+        return diaryResponseDtos;
 
     }
 }
