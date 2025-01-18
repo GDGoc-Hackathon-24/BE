@@ -18,18 +18,16 @@ public class QuizResponseDto {
         private LocalDateTime createdAt;
     }
 
-    @Builder
     @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
+    @Builder
     public static class quizList {
         private Long id;
-        private String question; // 퀴즈
-        private List<QuizOptionDto> options; // 선택지 목록
-        private Long answer; // 정답 번호
-        private Long quizAnswer; // 유저의 답변 번호
-        private boolean isCorrect; // 맞/틀 여부
+        private String question;
+        private List<QuizOptionDto> options;
+        private Long answer;
+        private Long quizAnswer;
+        private boolean isCorrect;
+        private LocalDateTime solvedAt; // 푼 날짜 추가
     }
 
     // 선택지 DTO
