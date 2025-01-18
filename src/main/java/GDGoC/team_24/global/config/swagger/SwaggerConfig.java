@@ -1,4 +1,4 @@
-package GDGoC.team_24.global.config;
+package GDGoC.team_24.global.config.swagger;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
