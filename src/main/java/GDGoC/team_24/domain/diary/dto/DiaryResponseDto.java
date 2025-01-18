@@ -4,12 +4,13 @@ import GDGoC.team_24.domain.diary.domain.Diary;
 
 import GDGoC.team_24.domain.diaryPhoto.domain.DiaryPhoto;
 import GDGoC.team_24.domain.user.domain.User;
-
+import lombok.Builder;
 
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Builder
 public record DiaryResponseDto(
         Long id,
         Long userId,
@@ -31,4 +32,14 @@ public record DiaryResponseDto(
     }
 
 
+
+    public static DiaryResponseDto from(Diary diary) {
+        return DiaryResponseDto.builder()
+                .id(diary.getId())
+                .date(diary.getDate().toString())
+                .content(diary.getContent())
+                .userId(diary.getUser().getId())
+                .todayEmotion(diary.getTodayEmtion().toString())
+                .build();
+    }
 }

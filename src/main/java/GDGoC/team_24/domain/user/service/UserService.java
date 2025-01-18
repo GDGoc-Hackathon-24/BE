@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+
 public class UserService {
 
     private final UserRepository userRepository;
@@ -24,8 +25,12 @@ public class UserService {
 
     public UserResponseDto userSignUp(UserRequestDto userRequestDto) {
 
+        if(isDuplicate(userRequestDto.phoneNumber())){
+            throw new GeneralException(ErrorStatus.FAMILY_ALREADY);
+        }
 
         GENDER gender = GENDER.valueOf(userRequestDto.gender().toUpperCase());
+
         User user = User.builder()
                 .name(userRequestDto.name())
                 .gender(gender)
@@ -39,10 +44,15 @@ public class UserService {
         return new UserResponseDto(user);
     }
 
+    private boolean isDuplicate(String phoneNumber) {
+        return userRepository.existsByPhoneNumber(phoneNumber);
+    }
+
     public UserResponseDto userLogin(UserLoginReqDto userLoginReqDto) {
 
         User user = userRepository.findByPhoneNumber(userLoginReqDto.phoneNumber())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
+
 
         return new UserResponseDto(user);
 

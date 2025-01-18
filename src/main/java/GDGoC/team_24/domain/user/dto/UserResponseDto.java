@@ -21,7 +21,6 @@ public record UserResponseDto(
                 user.getName(),
                 user.getEmoji(),
                 user.getPhoneNumber(),
-                user.getFamily().getId()
-        );
+                user.getFamily() != null ? user.getFamily().getId() : null);
     }
 }
