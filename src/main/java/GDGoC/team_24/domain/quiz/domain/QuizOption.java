@@ -1,27 +1,25 @@
-package GDGoC.team_24.domain.family.domain;
+package GDGoC.team_24.domain.quiz.domain;
 
 import GDGoC.team_24.domain.user.domain.User;
 import GDGoC.team_24.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
-public class Family extends BaseEntity {
-
+public class QuizOption extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Quiz quiz;
 
-//    @Enumerated(EnumType.STRING)
-//    private RELATIONSHIP relationship;
+    private Long number;
+    private String text;
 
-    private String gender;
-
-    @OneToOne(mappedBy = "family")
-    private User user;
 }

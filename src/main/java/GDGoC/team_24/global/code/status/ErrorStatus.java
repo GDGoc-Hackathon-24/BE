@@ -24,8 +24,10 @@ public enum ErrorStatus implements BaseErrorCode {
 
     JWT_SIGNATURE_INVALID(HttpStatus.UNAUTHORIZED, "AUTH001", "JWT 서명이 올바르지 않습니다."),
     JWT_EXPIRED(HttpStatus.UNAUTHORIZED, "AUTH002", "JWT 토큰이 만료되었습니다."),
-    JWT_MALFORMED(HttpStatus.UNAUTHORIZED, "AUTH003", "JWT 토큰이 올바르지 않은 형식입니다.");
+    JWT_MALFORMED(HttpStatus.UNAUTHORIZED, "AUTH003", "JWT 토큰이 올바르지 않은 형식입니다."),
 
+
+    QUIZ_NOT_FOUND(HttpStatus.NOT_FOUND,"QUIZ4001","퀴즈를 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
