@@ -39,7 +39,7 @@ public class QuizController {
     }
 
 
-    @Operation(summary = "퀴즈 조회 API", description = "지금까지 푼 퀴즈를 페이지네이션으로 조회합니다.")
+    @Operation(summary = "풀었던 퀴즈 조회 API", description = "지금까지 푼 퀴즈를 페이지네이션으로 조회합니다.")
     @GetMapping("/{userId}/answerlist")
     public ApiResponse<CustomPage<QuizResponseDto.quizList>> listQuiz(
             @PathVariable Long userId,

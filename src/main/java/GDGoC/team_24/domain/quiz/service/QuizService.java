@@ -81,16 +81,15 @@ public class QuizService {
         quizRepository.save(quiz);
         return isCorrect;
     }
-
-
+    
 
     public CustomPage<QuizResponseDto.quizList> readAllQuizzes(Long userId, Boolean solve, Pageable pageable) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
         Page<Quiz> quizzes = solve
-                ? quizRepository.findSolvedQuizzes(user, pageable)
-                : quizRepository.findUnsolvedQuizzes(user, pageable);
+                ? quizRepository.findSolvedQuizzes(user, pageable) // 풀었던 퀴즈 조회
+                : quizRepository.findUnsolvedQuizzes(user, pageable); // 안 푼 퀴즈 조회
 
         if (quizzes.isEmpty()) {
             throw new GeneralException(ErrorStatus.QUIZ_NOT_FOUND);
@@ -99,8 +98,10 @@ public class QuizService {
         // `Page` 객체를 `CustomPage`로 변환
         List<QuizResponseDto.quizList> quizList = quizzes.getContent().stream()
                 .map(quiz -> {
+                    // 각 퀴즈의 선택지만 조회
                     List<QuizOption> options = quizOptionRepository.findByQuiz(quiz);
 
+                    // 선택지 DTO로 변환
                     List<QuizResponseDto.QuizOptionDto> optionDtos = options.stream()
                             .map(option -> QuizResponseDto.QuizOptionDto.builder()
                                     .number(option.getNumber())
@@ -108,6 +109,10 @@ public class QuizService {
                                     .build())
                             .toList();
 
+                    // `solvedAt` 값을 퀴즈 상태에 따라 설정
+                    LocalDateTime solvedAt = quiz.isCompleted() ? quiz.getUpdatedAt() : null;
+
+                    // 퀴즈 DTO로 변환
                     return QuizResponseDto.quizList.builder()
                             .id(quiz.getId())
                             .question(quiz.getQuestion())
@@ -115,7 +120,7 @@ public class QuizService {
                             .answer(quiz.getAnswer())
                             .quizAnswer(quiz.getQuizAnswer())
                             .isCorrect(quiz.isCorrect())
-                            .solvedAt(quiz.getUpdatedAt())
+                            .solvedAt(solvedAt) // 상태에 따라 `solvedAt` 값 설정
                             .build();
                 })
                 .toList();
